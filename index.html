@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="timestampApp">
+  <head>
+    <title>Timestamp Helper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    
+    <style type="text/css">
+        .padding-bottom {
+            padding-bottom: 1em;
+        }
+    </style>
+  </head>
+  <body ng-controller="TimestampController">
+  
+    <div class="container">
+        <div class="page-header">
+            <h1 id="current-time">{{time}}</h1>
+        </div>
+        
+        <div class="row padding-bottom">
+            <button class="btn" id="time-start" ng-click="start()">Start</button>
+            <button class="btn" id="time-stop" ng-click="stop()">Stop</button>
+            <button class="btn" ng-click="showSettings = !showSettings"><i class="fa fa-cog"></i></button>
+        </div>
+        
+        <div class="row padding-bottom" ng-show="showSettings">            
+            <button class="btn" id="time-set" ng-click="setTime()">Set Time</button>
+            <button class="btn" id="time-set" ng-click="reset()">Reset</button>
+        </div>
+        
+        <div class="row padding-bottom">
+            <button class="btn btn-primary add-item" ng-click="addTimestamp('ve')">Video error</button>
+            <button class="btn btn-danger add-item" ng-click="addTimestamp('ae')">Audio error</button>
+            <button class="btn btn-success add-item" ng-click="addTimestamp('c')">Captioning</button>        
+        </div>
+        
+        <div class="row">
+            <div ng-repeat="timestamp in timestamps | orderBy : '-time'">
+                <h3>
+                <label class='{{timestamp.class}}'>{{timestamp.text}}
+                <i class="fa fa-close" ng-click="removeTimestamp(timestamp)"></i>
+                </label>
+                </h3>
+            </div>
+        </div>
+    </div>
+    
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-touch.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
