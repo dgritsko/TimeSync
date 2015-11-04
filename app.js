@@ -4,9 +4,9 @@ angular.module('timestampApp', ['ngTouch'])
                 { tag: 'primary', title: 'Video error' },
                 { tag: 'danger', title: 'Audio error' }, 
                 { tag: 'success', title: 'Captioning' }, 
-                { tag: 'default', title: '' }, 
                 { tag: 'info', title: '' }, 
                 { tag: 'warning', title: '' }, 
+                { tag: 'default', title: '' }, 
         ];
       
         $scope.running = false;
@@ -25,14 +25,13 @@ angular.module('timestampApp', ['ngTouch'])
             $scope.running = false;
         }
         
-        $scope.setTime = function() {
-            var rawTime = prompt("Enter the desired time in HH:MM:SS format:");
-            if (rawTime) {
-                $scope.currentTime = textToMs(rawTime);
-                $scope.time = msToText($scope.currentTime);
+        $scope.changeTime = function() {
+            if ($scope.rawtime) {
+                $scope.time = $scope.rawtime;
+                $scope.currentTime = textToMs($scope.rawtime);
             }
-        }
-        
+        };
+                
         $scope.reset = function() {
             if (confirm('Are you sure?')) {
                 $scope.timestamps = [];
