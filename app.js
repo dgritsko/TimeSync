@@ -42,6 +42,20 @@ angular.module('timestampApp', ['ngTouch'])
                 $scope.currentTime = textToMs($scope.rawtime);
             }
         };
+        
+        $scope.sendEmail = function() {
+            var body = '';
+            
+            $('#results label').each(function(i, e) {
+                var title = $(e).attr('title')
+                
+                var contents = $(e).text().trim();
+                
+                body += contents + ' (' + title + ')\r\n';
+            });
+            
+            window.open("mailto:test@test.com?body=" + body);
+        };
                 
         $scope.reset = function() {
             if (confirm('Are you sure?')) {
