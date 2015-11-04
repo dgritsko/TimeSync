@@ -1,11 +1,14 @@
 angular.module('timestampApp', ['ngTouch'])
   .controller('TimestampController', ['$scope', '$interval', function($scope, $interval) {
-        var typeInfo = {
-            've' : { 'class' : 'label label-primary', 'title' : 'Video error' },
-            'ae' : { 'class' : 'label label-danger', 'title' : 'Audio error' },
-            'c' : { 'class' : 'label label-success', 'title' : 'Captioning' }
-        }
-
+        $scope.labels = [
+                { tag: 'primary', title: 'Video error' },
+                { tag: 'danger', title: 'Audio error' }, 
+                { tag: 'success', title: 'Captioning' }, 
+                { tag: 'default', title: '' }, 
+                { tag: 'info', title: '' }, 
+                { tag: 'warning', title: '' }, 
+        ];
+      
         $scope.running = false;
         $scope.startTime = Date.now();
         
@@ -46,10 +49,12 @@ angular.module('timestampApp', ['ngTouch'])
             }
         };
         
-        $scope.addTimestamp = function (type) {
+        $scope.addTimestamp = function (label) {
             var time = $scope.currentTime;
             
-            this.timestamps.push({ type: type, time: time, text: msToText(time), class: typeInfo[type]['class'] });
+            var c = 'label label-' + label['tag'];
+            
+            this.timestamps.push({ time: time, text: msToText(time), class: c });
         }
 
         var padLeft = function(input, totalLength) {

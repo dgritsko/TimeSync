@@ -29,12 +29,15 @@
         <div class="row padding-bottom" ng-show="showSettings">            
             <button class="btn" id="time-set" ng-click="setTime()">Set Time</button>
             <button class="btn" id="time-set" ng-click="reset()">Reset</button>
+            
+            <div ng-repeat="label in labels">
+                <label class="label label-{{label.tag}}">&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;
+                <input type="text" ng-model="label.title" />
+            </div>
         </div>
         
         <div class="row padding-bottom">
-            <button class="btn btn-primary add-item" ng-click="addTimestamp('ve')">Video error</button>
-            <button class="btn btn-danger add-item" ng-click="addTimestamp('ae')">Audio error</button>
-            <button class="btn btn-success add-item" ng-click="addTimestamp('c')">Captioning</button>        
+            <button ng-repeat="label in labels" ng-if="label.title" class="btn btn-{{label.tag}} add-item" ng-click="addTimestamp(label)">{{label.title}}</button>
         </div>
         
         <div class="row">
