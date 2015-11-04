@@ -11,13 +11,17 @@
         .padding-bottom {
             padding-bottom: 1em;
         }
+        
+        .margin-right {
+            margin-right: 1em;
+        }
     </style>
   </head>
   <body ng-controller="TimestampController">
   
     <div class="container">
         <div class="page-header">
-            <h1 id="current-time" ng-show="!showSettings">{{time}}</h1>
+            <h1 id="current-time" ng-show="!showSettings">{{time}} <span ng-if="frameNumber">(Frame {{frameNumber}})</span></h1>
             <h1 ng-show="showSettings">
                 <input type="text" ng-model="rawtime" ng-change="changeTime()" pattern="[0-9]{2}:[0-5][0-9]:[0-5][0-9]"  />
             </h1>
@@ -26,13 +30,18 @@
         <div class="row padding-bottom">
             <button class="btn" id="time-start" ng-click="start()">Start</button>
             <button class="btn" id="time-stop" ng-click="stop()">Stop</button>
-            <button class="btn" ng-click="showSettings = !showSettings; rawtime = time"><i class="fa fa-cog"></i></button>
+            <button class="btn" ng-click="showSettings = !showSettings; rawtime = time;"><i class="fa fa-cog"></i></button>
             
             <button class="btn" id="time-set" ng-click="reset()" ng-show="showSettings">Reset</button>
         </div>
         
+        <div class="row padding-bottom" ng-show="showSettings">
+            <label ng-repeat="frameRate in frameRates" class="margin-right">
+                <input type="radio" name="rdoFrameRates" ng-model="$parent.selectedFrameRate" ng-value="frameRate" /> {{frameRate.title}}
+            </label>
+        </div>
+        
         <div class="row padding-bottom" ng-show="showSettings">            
-            
             <div ng-repeat="label in labels">
                 <label class="label label-{{label.tag}}">&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;
                 <input type="text" ng-model="label.title" />
@@ -40,14 +49,16 @@
         </div>
         
         <div class="row padding-bottom">
-            <button ng-repeat="label in labels" ng-if="label.title" class="btn btn-{{label.tag}} add-item" ng-click="addTimestamp(label)">{{label.title}}</button>
+            <button ng-repeat="label in labels" ng-if="label.title" class="btn btn-{{label.tag}} add-item margin-right" ng-click="addTimestamp(label)">{{label.title}}</button>
         </div>
         
-        <div class="row">
+        <div class="row" id="results">
             <div ng-repeat="timestamp in timestamps | orderBy : '-time'">
                 <h3>
-                <label class='{{timestamp.class}}'>{{timestamp.text}}
-                <i class="fa fa-close" ng-click="removeTimestamp(timestamp)"></i>
+                <label class='{{timestamp.class}}' title="{{timestamp.description}}">
+                    <span ng-if="timestamp.frameNumber">Frame {{timestamp.frameNumber}}: </span>
+                    {{timestamp.timeText}}
+                    <i class="fa fa-close" ng-click="removeTimestamp(timestamp)"></i>
                 </label>
                 </h3>
             </div>

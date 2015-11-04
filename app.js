@@ -8,13 +8,24 @@ angular.module('timestampApp', ['ngTouch'])
                 { tag: 'warning', title: '' }, 
                 { tag: 'default', title: '' }, 
         ];
-      
+        
+        $scope.frameRates = [
+            { title: 'None', rate: 0.0 },
+            { title: '29.97df', rate: 29.97 },
+            { title: '25', rate: 25.0 },
+            { title: '24', rate: 24.0 },
+            { title: '23.97', rate: 23.97 },
+        ];
+        
+        $scope.selectedFrameRate = $scope.frameRates[0];
+              
         $scope.running = false;
         $scope.startTime = Date.now();
         
         $scope.currentTime = 0;
         $scope.timestamps = [];
         $scope.time = '00:00:00';
+        $scope.frameNumber = '';
         
         $scope.start = function() {
             $scope.startTime = Date.now();
@@ -53,7 +64,7 @@ angular.module('timestampApp', ['ngTouch'])
             
             var c = 'label label-' + label['tag'];
             
-            this.timestamps.push({ time: time, text: msToText(time), class: c });
+            this.timestamps.push({ time: time, timeText: msToText(time), class: c, frameNumber : $scope.frameNumber, description: label['title'] });
         }
 
         var padLeft = function(input, totalLength) {
@@ -91,6 +102,16 @@ angular.module('timestampApp', ['ngTouch'])
                 $scope.currentTime += elapsed;
                 
                 $scope.time = msToText($scope.currentTime);
+                
+                if ($scope.selectedFrameRate.rate > 0) {
+                    var seconds = $scope.currentTime / 1000;
+                    var frameNumber = seconds * $scope.selectedFrameRate.rate;
+                    
+                    // Round to 2 decimal places
+                    frameNumber = Math.round(frameNumber * 100) / 100;
+                    
+                    $scope.frameNumber = frameNumber;
+                }
             }
         }, 250);
   }]);
